@@ -9,22 +9,15 @@ import time
 from PartesLogicas import *
 import os
 
-# metodo chave que sorteia a posicao inicial do x a ser inserido na linha ultima linha da matriz, coluna qualquer
-def posicao_inicial(linha):
+
+timming = 0
+
+def cls():
     """
-        Função que exerce o papel de dar um índice possível inicial para ser utilizado
-        posteriormente para a posição inicial de 'x'.
-        :return: O valor entre 0 e 7
-        """
-    valor = random.randint(0, linha - 1)
-    return valor
-
-
-tamanhoMatriz = 10 # variavel sobrecarregada que indica o tamanho da matriz e define ao mesmo tempo a posicao inicial do personagem
-
-posicaoPersonagem = [tamanhoMatriz - 1, posicao_inicial(tamanhoMatriz)]
-cenarioDaFase = criaCenario(posicaoPersonagem, tamanhoMatriz)
-# mapaInimigo = criaCenarioInimigo(posicao_inicial(20), posicao_inicial(20), 20)
+    funcao que limpa o terminal sempre que invocada
+    :return: void
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def mapa_com_bombas(cenarioCriado):
@@ -69,36 +62,27 @@ def mapaReal(cenario):
                 print()
 
 
-def cls():
-    """
-    funcao que limpa o terminal sempre que invocada
-    :return: void
-    """
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def joga(cenario, posicao):
-
+def jogando():
     '''
     funcao que inicia o jogo propriamente dito, onde serao setados os movimentos e verificado se o jogador vence ou perde a partida.
     :param cenario: mapa da fase
     :param posicao: lugar onde o jogador inicia a partida
     :return: void
     '''
-    global tamanhoMatriz
+
+    cenario = getCenario()
+    posicao = getPosicao()
+
     while True:
         cls()
         mapaReal(cenario)
         movimento = str(input()).upper()
-        #se esquecer e precisar corrigir essa parte, basta excluir o intervalo de 95 - 99 linhas
-        #que o codigo volta ao normal, com movimentacao adequada... lembrar de excluir o caput
-        # da validacao
-        if(movimento == "CAPUT"):
+        movimento = validaMovimentacao(movimento, cenario, posicao)
+
+        if movimento == "CAPUT":
             cls()
             mapa_com_bombas(cenario)
-            movimentos = str(input()).upper()
-            movimento = validaMovimentacao(movimentos, cenario, posicao)
-        else:
-            movimento = validaMovimentacao(movimento, cenario, posicao)
+            controlaPersonagem(movimento, cenario, posicao)
 
         if verificaSeMorreu(movimento, cenario, posicao):
             cls()
@@ -111,10 +95,24 @@ def joga(cenario, posicao):
         controlaPersonagem(movimento, cenario, posicao)
 
         if venceu(cenario):
-            print("Congratulations!")
-            tamanhoMatriz = passou_fase(tamanhoMatriz)
+            passouFase()
             time.sleep(3)
+            print("Você passou de fase! O que deseja fazer?")
             cls()
+            break
+    incrementa_vezesRodando()
+    terminou_partida()
+
+
+def comoJogar():
+    while True:
+        print("Deseja aprender como jogar?")
+        resposta = str(input()).lower()
+        if (resposta == "não" or resposta == "n"):
+            break
+        else:
+            print("regras do jogo: blablala")
+            print("Pressione qualquer tecla para continuar: ")
             break
 
 
@@ -126,6 +124,7 @@ def validaMovimentacao(movimento, cenario, pos_x):
     :return: o input do movimento adequadamente atualizado
     """
     possibilities = ["W", "S", "A", "D", "CAPUT"]
+    powerUps = getPowerUps()
     while True:
         if movimento not in possibilities:
             print("Movementacao inválida, por favor tente novamente")
@@ -151,45 +150,76 @@ def validaMovimentacao(movimento, cenario, pos_x):
                     return movimento
             elif movimento == "W":
                 return movimento
+            else:
+                return movimento
 
 
-def iniciandoJogo(cenario):
+def iniciandoJogo():
     """
     imprime a primeira tela que o jogador vera, mostrando as bombas e caminhos livres. apos 6s, o cenario eh ocultado
     :param cenario: mapa da fase "cru" a ser printado na tela com as bombas
     :return: void, printa o mapa
     """
+    cenario = getCenario()
+    timming = getTimming()
+    if timming == 0:
+        print("\nVocê está preparado?\n")
+        time.sleep(1)
+        mapa_com_bombas(cenario)
+        time.sleep(4)
+        print("\nSerá mesmo??????")
+        time.sleep(1)
+        jogando()
 
-    print("\nVocê está preparado?\n")
-    time.sleep(1)
-    mapa_com_bombas(cenario)
-    time.sleep(4)
-    print("\nSerá mesmo??????")
-    time.sleep(1)
-    joga(cenarioDaFase, posicaoPersonagem)
-
-
-def comoJogar():
-    while True:
-        print("Deseja aprender como jogar?")
-        resposta = str(input()).lower()
-        if (resposta == "não" or resposta == "n"):
-            break
-        else:
-            print("regras do jogo: blablala")
+    else:
+        cenario = getCenario()
+        print("Boa sorte!")
+        time.sleep(1)
+        cls()
+        print("Carregando. \U000023F3")
+        time.sleep(1)
+        cls()
+        print("Carregando.. \U000023F3")
+        time.sleep(0.5)
+        cls()
+        print("Carregando... \U000023F3")
+        time.sleep(0.5)
+        cls()
+        print("Tudo pronto? \U0000231B")
+        time.sleep(0.5)
+        mapa_com_bombas(cenario)
+        time.sleep(3)
+        jogando()
 
 
 def seletorOpcoes(option):
-    opcoes = ["I", "C", "L", "S"]
+    opcoes = ["I", "C", "L", "S", "1"]
+    timming = getTimming()
     while True:
         if option not in opcoes:
             print("Por favor selecione uma opção válida")
-            option = str(input())
+            option = str(input()).upper()
         else:
             if option == "I":
-                comoJogar()
+                if timming == 0:
+                    comoJogar()
                 time.sleep(2)
-                iniciandoJogo(cenarioDaFase)
+                iniciandoJogo()
+                break
+            if option == "L":
+                print ("Carregando recursos.")
+                time.sleep(1)
+                print ("Carregando recursos.. \U000023F3")
+                time.sleep(1)
+                print ("Carregando recursos... \U000023F3")
+                cls()
+                loja()
+                break
+            if option == "C":
+                iniciandoJogo()
+                break
+            if option == "S":
+                print (getCoins())
                 break
 
 
@@ -202,17 +232,55 @@ def menuInicial():
           "       ┃➲  🅂core\n\n"
           "       Você está pronto?\n"
           "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    time.sleep(3)
-    opcao = str(input("O que temos para hoje? ")).upper()
+    time.sleep(0.5)
+    if(timming == 0):
+        opcao = str(input("O que temos para hoje? ")).upper()
+    else:
+        opcao = str(input("Como posso ajudar dessa vez? ")).upper()
     cls()
     time.sleep(1)
     seletorOpcoes(opcao)
 
+def loja():
+    print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
+          "         MineShopping!\n\n"
+          "\n|| Você tem %d coins disponíveis\n  "
+          "     \n-> PW (1) - 20 coins\n"
+          "     \n-> PW (2) - 30 coins\n"
+          "     \n-> PW (3) - 60 coins\n"
+          "     \n-> (R)etornar\n\n"
+          "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣" % getCoins())
+    opcao = str(input("| E aí, o que vai ser?\n")).upper()
+    cls()
+    manipulaLoja(opcao)
+
+
+def manipulaLoja(opcao):
+    opcoes = ["1", "2", "3", "R"]
+    while opcao not in opcoes:
+        print ("Por favor, selecione uma opcao válida")
+        opcao = str(input()).upper()
+
+    if opcao == "R":
+        menuInicial()
+
+
+
+def terminou_partida():
+    """
+    funcao executada no fim de cada partida para questionar o jogador o que ele deseja fazer
+    :param cenarioDaFase: recebido para fazer a varredura do mapa
+    :return: void
+    """
+    limpaFase()
+    opcao = str(input("Digite 1 para continuar e 2 para retornar ao menu: "))
+    if opcao == "2":
+        menuInicial()
+    else:
+        iniciandoJogo()
 
 while True:
+    """
+    laco principal
+    """
     menuInicial()
-    posicaoPersonagem.clear()
-    posicaoPersonagem = [tamanhoMatriz - 1, posicao_inicial(tamanhoMatriz)]
-    cenarioDaFase.clear()
-    cenarioDaFase = criaCenario(posicaoPersonagem, tamanhoMatriz)
-    
