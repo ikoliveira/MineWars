@@ -284,12 +284,16 @@ def getPowerUps():
     global powerUps
     return powerUps
 
+def gastouCoins(valor):
+    global coins
+    coins -= valor
+
 ############# VARIAVEIS GLOBAIS ######################
 
 tamanhoMatriz = 4  # variavel sobrecarregada que indica o tamanho da matriz e define ao mesmo tempo a posicao inicial do personagem
 posicaoPersonagem = [tamanhoMatriz - 1, posicao_inicial(tamanhoMatriz)]
 cenarioDaFase = criaCenario(posicaoPersonagem, tamanhoMatriz)
 timming = 0
-coins = 0
-powerUps = ["CAPUT"]
+coins = 99999
+powerUps = []
 ########################################################

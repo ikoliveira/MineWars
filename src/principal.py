@@ -75,34 +75,46 @@ def jogando():
 
     while True:
         cls()
+        power = getPowerUps()
         mapaReal(cenario)
         movimento = str(input()).upper()
         movimento = validaMovimentacao(movimento, cenario, posicao)
 
-        if movimento == "CAPUT":
+        if movimento in power:
             cls()
-            mapa_com_bombas(cenario)
-            controlaPersonagem(movimento, cenario, posicao)
+            aplicaPowerUp(movimento)
+            power.remove(movimento)
+            time.sleep(2)
 
         if verificaSeMorreu(movimento, cenario, posicao):
-            cls()
-            mapa_com_bombas(cenario)
-            print("Que pena...\nVocê perdeu!")
-            time.sleep(5)
-            cls()
-            break
+            if "REVIVER" in power:
+                power.remove("REVIVER")
+            else:
+                incrementa_vezesRodando()
+                cls()
+                mapa_com_bombas(cenario)
+                print("Que pena...\nVocê perdeu!")
+                time.sleep(5)
+                cls()
+                break
 
         controlaPersonagem(movimento, cenario, posicao)
 
         if venceu(cenario):
+            incrementa_vezesRodando()
             passouFase()
             time.sleep(3)
             print("Você passou de fase! O que deseja fazer?")
             cls()
             break
-    incrementa_vezesRodando()
+
     terminou_partida()
 
+
+def aplicaPowerUp(movimento):
+    bombas = getCenario()
+    if movimento == "SB":
+        mapa_com_bombas(bombas)
 
 def comoJogar():
     while True:
@@ -123,8 +135,9 @@ def validaMovimentacao(movimento, cenario, pos_x):
     :param pos_x: naquele instante 't'
     :return: o input do movimento adequadamente atualizado
     """
-    possibilities = ["W", "S", "A", "D", "CAPUT"]
+    possibilities = ["W", "S", "A", "D"]
     powerUps = getPowerUps()
+    possibilities.extend(powerUps)
     while True:
         if movimento not in possibilities:
             print("Movementacao inválida, por favor tente novamente")
@@ -193,7 +206,7 @@ def iniciandoJogo():
 
 
 def seletorOpcoes(option):
-    opcoes = ["I", "C", "L", "S", "1"]
+    opcoes = ["I", "C", "L", "S"]
     timming = getTimming()
     while True:
         if option not in opcoes:
@@ -245,9 +258,9 @@ def loja():
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
           "         MineShopping!\n\n"
           "\n|| Você tem %d coins disponíveis\n  "
-          "     \n-> PW (1) - 20 coins\n"
-          "     \n-> PW (2) - 30 coins\n"
-          "     \n-> PW (3) - 60 coins\n"
+          "     \n-> (1) Show Bomb - 30 coins\n"
+          "     \n-> (2) Reviver (consumível) - 3000 coins\n"
+          "     \n-> (3) Stun - 60 coins\n"
           "     \n-> (R)etornar\n\n"
           "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣" % getCoins())
     opcao = str(input("| E aí, o que vai ser?\n")).upper()
@@ -258,12 +271,40 @@ def loja():
 def manipulaLoja(opcao):
     opcoes = ["1", "2", "3", "R"]
     while opcao not in opcoes:
-        print ("Por favor, selecione uma opcao válida")
+        print ("Por favor, selecione uma opcao válida (1, 2, 3, R)")
         opcao = str(input()).upper()
 
     if opcao == "R":
         menuInicial()
 
+    if opcao == "1":
+        preco = 1000
+        item = "SB"
+        validaCompra(preco, item)
+
+    if opcao == "2":
+        preco = 3000
+        item = "REVIVER"
+        validaCompra(preco, item)
+
+
+
+def validaCompra(preco, item):
+    coins = getCoins()
+    if coins < preco:
+        print("Você não possui dinheiro suficiente, jogue mais um pouco e retorne mais tarde...")
+        time.sleep(3)
+        cls()
+    else:
+        gastouCoins(preco)
+        setPowerUps(item)
+        time.sleep(1)
+        print ("Compra efetuada com sucesso!")
+        time.sleep(1.5)
+        coins = getCoins()
+        print ("Você possui %d coins após a sua compra" % coins)
+        time.sleep(3)
+        cls()
 
 
 def terminou_partida():
