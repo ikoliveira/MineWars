@@ -2,18 +2,39 @@ from PartesLogicas import *
 
 
 def criaCenarioInimigo(pos_x, pos_y, tamanho):
+    """
+    funcao que cria um cenario (mapa) propriamente dito onde a partida acontecera
+    :param pos_x: indica a posicao em que o jogador inicia o jogo
+    :param pos_y: indica a posicao em que o inimigo inicia o jogo
+    :param tamanho: Tamanho da matriz
+    :return:
+    """
     matriz_zerada = []
-    cenarioIntroduzido = CriaMatrizInimigo(matriz_zerada, pos_x, pos_y, tamanho)  # cenario com caminho nao seguro
-    caminhoAnalisado = analisaCaminhoInimigo(cenarioIntroduzido)
-    caminhoLivre = preparaCamiho(cenarioIntroduzido, caminhoAnalisado)
-    return caminhoLivre
+    cenario_introduzido = criaMatrizInimigo(matriz_zerada, pos_x, pos_y, tamanho)  # cenario com caminho nao seguro
+    caminho_analisado = analisaCaminhoInimigo(cenario_introduzido)
+    caminho_livre = preparaCaminho(cenario_introduzido, caminho_analisado)
+    return caminho_livre
 
 
 def getCenarioInimigo(pos_x, pos_y):
+    """
+    Função criada para retornar a criação do cenario inimigo.
+    :param pos_x: lista indicando linha e coluna do personagem.
+    :param pos_y: lista indicando linha e coluna do inimigo.
+    :return: a função cria cenario com as informações necessárias.
+    """
     return criaCenarioInimigo(pos_x[1], pos_y[1], 20)
 
 
-def CriaMatrizInimigo(lista_matriz, pos_x, pos_y, tamanho):
+def criaMatrizInimigo(lista_matriz, pos_x, pos_y, tamanho):
+    """
+    Serve para criar o mapa inimigo sem o caminho possível e coloca o personagem e o inimigo no mapa
+    :param lista_matriz: Recebe uma matriz vazia para zerar.
+    :param pos_x: número indicando a coluna do personagem.
+    :param pos_y: número indicando a coluna do inimigo.
+    :param tamanho: Tamanho da matriz criada.
+    :return: retorna a lista matriz criada.
+    """
     pos_x = [tamanho - 1, pos_x]
     lista_matriz = introduzCenario(lista_matriz, pos_x, tamanho)
     lista_matriz[0][pos_y] = INIMIGO
@@ -21,11 +42,14 @@ def CriaMatrizInimigo(lista_matriz, pos_x, pos_y, tamanho):
 
 
 def analisaCaminhoInimigo(lista_matriz):
+    """
+    Este for em sua totalidade serve para armazenar os indices 0 (de cada linha)em uma lista para
+    posteriormente ser escolhido de maneira aleatória e assim fazer um caminho entre as bombas.
+    Essa função cria uma lista com os indices que irá servir para posteriomente ser criada o caminho possível.
+    :param lista_matriz: A lista matriz que já passou pela função CriaMatrizInimigo
+    :return: Retorna a lista com os indices
+    """
     lista_indices = []
-    """
-    Este for em sua totalidade serve para armazenar os indices 0 (de cada linha)em uma lista para 
-    posteriormente ser escolhido de maneira aleatória e assim fazer um caminho entre as bombas. 
-    """
     for linhas in range(len(lista_matriz)):
         indices_zeros = []
         # um for destinado para criar uma lista onde fica armazenado o indices do zero em cada linha
@@ -56,6 +80,14 @@ def analisaCaminhoInimigo(lista_matriz):
 
 
 def MovimentaInimigo(pos_x, pos_y, lista_matriz):
+    """
+    Essa função é responsável pela inteligência artificial do inimigo e além disso escolhe as posições possíveis para
+    aproximação e em uma escolha aleatória movimenta o inimigo para uma posição mias proxima.
+    :param pos_x: Posição do personagem
+    :param pos_y: Posição do inimigo
+    :param lista_matriz: O cenario a ser analisado e utilizado.
+    :return:
+    """
     lista_movimento = []
     if pos_y[1] < pos_x[1]:  # Direita
         lista_movimento.append("D")
@@ -84,32 +116,14 @@ def MovimentaInimigo(pos_x, pos_y, lista_matriz):
         pos_y[1] = (pos_y[1] + 1)
 
 
-def MapaInimigo(cenario):
-    for linha in range(len(cenario)):
-        for coluna in range(len(cenario)):
-            if cenario[linha][coluna] == 0:
-                if coluna == (len(cenario) - 1):
-                    print(MATO.format(cenario))
-                else:
-                    print(MATO, end='')
-            elif cenario[linha][coluna] == 1:
-                if coluna == (len(cenario) - 1):
-                    print(BOMBA.format(cenario))
-                else:
-                    print(BOMBA, end='')
-            elif cenario[linha][coluna] == PERSONAGEM:
-                if coluna == (len(cenario) - 1):
-                    print(getEmoji().format(cenario))
-                else:
-                    print(getEmoji(), end='')
-            else:
-                if coluna == (len(cenario) - 1):
-                    print(CAPETA.format(cenario))
-                else:
-                    print(CAPETA, end='')
-
-
 def verificaSeInimigoMatou(cenario, pos_x):
+    """
+    Essa função serve para indentificar se após a movimentaçõo do usuário e do inimigo se este(o personagem) não
+    está em uma posição adjacente ao inimigo.
+    :param cenario: Recebe a matriz referente ao cenário.
+    :param pos_x: Posição do personagem.
+    :return: retorna True para a validação em outra função.
+    """
     if pos_x[0] != len(cenario) - 1:
         if cenario[pos_x[0] + 1][pos_x[1]] == INIMIGO:  # Verifica baixo
             return True

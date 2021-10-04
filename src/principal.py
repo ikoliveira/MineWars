@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: UTF-8
 # projeto para a disciplina de programacao 1 do IFPB
 # alunos: Diego Cardoso e Igor Kadson
 
@@ -8,17 +8,17 @@ import os
 
 def cls():
     """
-    funcao que limpa o terminal sempre que invocada
-    :return: void
+    Funcao que limpa o terminal sempre que invocada.
+    :return: void.
     """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def mapa_com_bombas(cenariocriado):
+def mapaComBombas(cenariocriado):
     """
-    exibe o mapa com as bombas na tela
-    :param cenariocriado: importa o cenario criado
-    :return: void, printa o cenario
+    Exibe o mapa com as bombas na tela.
+    :param cenariocriado: importa o cenario criado.
+    :return: void, printa o cenario.
     """
     contador_linhas = 0
     for linha in range(len(cenariocriado)):
@@ -42,9 +42,9 @@ def mapa_com_bombas(cenariocriado):
 
 def mapaReal(cenario):
     """
-    imprime o mapa da fase com as bombas e caminhos livres ocultos
-    :param cenario: mapa da fase a ser iterado
-    :return: void, printa o mapa da fase
+    Imprime o mapa da fase com as bombas e caminhos livres ocultos.
+    :param cenario: mapa da fase a ser iterado.
+    :return: void, printa o mapa da fase.
     """
     for linha in range(len(cenario)):
         for coluna in range(len(cenario[linha])):
@@ -58,10 +58,10 @@ def mapaReal(cenario):
 
 def jogando(cenario, posicao):
     """
-    starta o game e controla o fluxo da aplicacao. verifica se o player morre, vive ou passa de fase
-    :param cenario: mapa da fase
-    :param posicao: lugar onde o jogador inicia a partida
-    :return: void
+    Starta o game e controla o fluxo da aplicacao. verifica se o player morre, vive ou passa de fase.
+    :param cenario: mapa da fase.
+    :param posicao: lugar onde o jogador inicia a partida.
+    :return: void.
     """
     while True:
         cls()
@@ -83,9 +83,9 @@ def jogando(cenario, posicao):
                 print("Você consumiu seu REVIVER.\nNa próxima não haverá escapatória, esteja atento.")
                 time.sleep(3)
             else:
-                incrementa_vezesRodando()
+                incrementaVezesRodando()
                 cls()
-                mapa_com_bombas(cenario)
+                mapaComBombas(cenario)
                 print("Que pena...\nVocê perdeu!")
                 time.sleep(5)
                 cls()
@@ -95,44 +95,53 @@ def jogando(cenario, posicao):
 
         if venceu(cenario):
             cls()
-            mapa_com_bombas(cenario)
-            MOEDASGANHAS = 10
-            incrementa_vezesRodando()
-            passouFase(MOEDASGANHAS)
+            mapaComBombas(cenario)
+            moedasganhas = 10
+            incrementaVezesRodando()
+            passouFase(moedasganhas)
             time.sleep(3)
-            print("Você passou de fase! O que deseja fazer?")
             cls()
             break
-    terminou_partida()
+    terminouPartida()
 
 
 def aplicaPowerUp(movimento):
-    bombas = get_cenario()
+    """
+    Roda quando um powerup é utilizado e aplica este.
+    :param movimento: dado da entrada respectivo ao código a ser analisado.
+    :return: Void.
+    """
+    bombas = getCenario()
     if movimento == PW1:
-        mapa_com_bombas(bombas)
+        mapaComBombas(bombas)
 
 
 def comoJogar():
+    """
+    Esta função é dada no começo da fase, onde há a opção do usuário escolher se quer acessar o tutorial não,
+    de acordo com a respota do usuário ("sim" ou "não").
+    :return: prints respectivos.
+    """
     while True:
-        print("Deseja aprender como jogar?")
+        print("Deseja aprender como jogar? (S/N)")
         resposta = str(input()).lower()
-        if resposta == "não" or resposta == "n":
+        if resposta == "n":
             break
         else:
             print("Analise cuidadosamente onde as bombas irão aparecer e tome cuidado para não pisar nelas.")
             print("Para realizar um movimento pressione a tecla de direção (W, S, A, D)", end=" ")
             print("e em seguida pressione Enter para movimentar o personagem")
-            a = str(input("Se está pronto, pessione qualquer tecla para continuar: "))
+            str(input("Se está pronto, pessione qualquer tecla para continuar: "))
             cls()
             break
 
 
 def validaMovimentacao(movimento, cenario, pos_x):
     """
-    :param movimento: parametro a ser validado
-    :param cenario: para analisar o mapa e tentar adivinhar o proximo movimento do x
-    :param pos_x: naquele instante 't'
-    :return: o input do movimento adequadamente atualizado
+    :param movimento: parametro a ser validado.
+    :param cenario: para analisar o mapa e tentar adivinhar o proximo movimento do x.
+    :param pos_x: naquele instante 't'.
+    :return: o input do movimento adequadamente atualizado.
     """
     possibilities = ["W", "S", "A", "D"]
     power_ups = getPowerUps()
@@ -168,9 +177,9 @@ def validaMovimentacao(movimento, cenario, pos_x):
 
 def iniciandoJogo():
     """
-    imprime a primeira tela que o jogador vera, mostrando as bombas e caminhos livres.
-    apos alguns instantes o cenario eh ocultado
-    :return: void, printa o mapa
+    Imprime a primeira tela que o jogador vera, mostrando as bombas e caminhos livres.
+    apos alguns instantes o cenario eh ocultado.
+    :return: void, printa o mapa.
     """
 
     if getTimming() == 0:
@@ -178,11 +187,11 @@ def iniciandoJogo():
         limpaFase()
         print("\nVocê está preparado?\n")
         time.sleep(1)
-        mapa_com_bombas(get_cenario())
+        mapaComBombas(getCenario())
         time.sleep(4)
         print("\nSerá mesmo??????")
         time.sleep(1)
-        jogando(get_cenario(), get_posicao())
+        jogando(getCenario(), getPosicao())
 
     else:
         limpaFase()
@@ -192,18 +201,18 @@ def iniciandoJogo():
         cls()
         carregando()
         time.sleep(0.5)
-        mapa_com_bombas(get_cenario())
+        mapaComBombas(getCenario())
         time.sleep(3)
-        jogando(get_cenario(), get_posicao())
+        jogando(getCenario(), getPosicao())
 
 
 def seletorOpcoes(option):
     """
-    recebe a opcao advinda do menu e interpreta. funciona de forma similar a um switch case
-    :param option: inidica a acao a ser tomada
-    :return: void, da continuidade com a execucao do programa
+    Recebe a opcao advinda do menu e interpreta. funciona de forma similar a um switch case.
+    :param option: inidica a acao a ser tomada.
+    :return: void, da continuidade com a execucao do programa.
     """
-    opcoes = ["N", "C", "L", "S", "F", "T"]  # lista de opcoes possiveis
+    opcoes = ["N", "C", "L", "S", "F", "T", "G"]  # lista de opcoes possiveis
     if zerou():
         if "M" in opcoes:
             pass
@@ -242,18 +251,19 @@ def seletorOpcoes(option):
                 iniciandoJogo()
                 break
             if option == "S":
+                salvarProgresso(getUsuario())
                 config.read("save.ini")
                 print("Score do Acumulado de Coins:")
                 time.sleep(.4)
                 for i in range(len(config.sections())):
                     print(f"{config.sections()[i]}: {config[config.sections()[i]]['coins_totais']}")
-                continuar = str(input("Pressione qualquer tecla para continuar... "))
+                str(input("Pressione qualquer tecla para continuar... "))
                 cls()
                 decideMenus()
                 break
             if option == "M":
                 preparaPosicoes()
-                inimigoPlays(get_posicao(), getPosicaoInimigo())
+                inimigoPlays(getPosicao(), getPosicaoInimigo())
                 break
             if option == "F":
                 salvarProgresso(getUsuario())
@@ -267,9 +277,20 @@ def seletorOpcoes(option):
                 print("Progresso salvo com sucesso!")
                 time.sleep(.9)
                 break
+            if option == "G":
+                salvarProgresso(getUsuario())
+                print("Progresso salvo com sucesso!")
+                time.sleep(.4)
+                cls()
+                decideMenus()
+                break
 
 
 def menuInicial():
+    """
+    Função que printa o menu inicial além de pedir a escolha de onde ele quer ir.
+    :return: a função QualVaiSer.
+    """
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
           "     Bem vind@ ao MineWars\n\n"
           "       ┃➲  🄽 ovo jogo\n"
@@ -277,16 +298,17 @@ def menuInicial():
           "       ┃➲  🄻 oja\n"
           "       ┃➲  🅃 rocar Perfil\n"
           "       ┃➲  🅂 core\n"
+          "       ┃➲  🄶 uardar Progresso\n"
           "       ┃➲  🄵 im\n\n"
           "       Você está pront@\n" + "        " + getUsuario() + " " + getEmoji() +
           " ?\n ◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    qual_vai_ser()
+    qualVaiSer()
 
 
-def qual_vai_ser():
+def qualVaiSer():
     """
-    direciona a opcao selecionada no menu para o seletor de opcoes
-    :return: void, apenas chama outra funcao
+    Direciona a opcao selecionada no menu para o seletor de opcoes.
+    :return: void, apenas chama outra funcao.
     """
     time.sleep(0.5)
     if qtd_vezes == 0:
@@ -299,6 +321,10 @@ def qual_vai_ser():
 
 
 def loja():
+    """
+    Printa a loja, além de dar o input para o usuário escolher o que quer comprar.
+    :return: outra função que exerce a função da tentativa de pagamento ou compra deste.
+    """
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
           "  ╰(▔∀▔)╯ MineShopping! ╰(▔∀▔)╯\n\n"
           "\n|| Você tem %d coins disponíveis\n  "
@@ -313,6 +339,11 @@ def loja():
 
 
 def manipulaLoja(opcao):
+    """
+    Nesta função é onde está localizado os valores e os itens disponíveis para compra.
+    :param opcao: A opção de item que o usuário digitou.
+    :return: Se tem opção possível ou não.
+    """
     opcoes = ["1", "2", "3", "R"]
     while opcao not in opcoes:
         print("Por favor, selecione uma opcao válida (1, 2, 3, R)")
@@ -345,7 +376,12 @@ def manipulaLoja(opcao):
 
 
 def validaCompra(preco, item):
-
+    """
+    Verifica se o usuário tem coins o suficiente para comprar um item respectivo, se sim, a compra é efetuada.
+    :param preco: O preço da compra.
+    :param item: E o item que o usuário quer comprar.
+    :return: Retorna as respostas respectivas.
+    """
     if getCoins() < preco:
         time.sleep(1)
         print("\nVocê não possui dinheiro suficiente.\nJogue mais um pouco e retorne mais tarde...\n\n(͡° ͜ʖ ͡°)(͡° "
@@ -366,28 +402,36 @@ def validaCompra(preco, item):
         cls()
 
 
-def terminou_partida():
+def terminouPartida():
     """
-    funcao executada no fim de cada partida, da continuidade com o funcionamento do jogo
-    redireciona o jogador para o menu ou para um novo jogo
-    :return: void, continua o funcionamento do código
+    Funcao executada no fim de cada partida, da continuidade com o funcionamento do jogo.
+    redireciona o jogador para o menu ou para um novo jogo.
+    :return: void, continua o funcionamento do código.
     """
     limpaFase()
+
+    if zerou():
+        print("PARABÉNS, VOCÊ CHEGOU AO FIM DO JOGO\nMODO INIMIGO LIBERADO!")
+        time.sleep(1)
+        cls()
+
     opcao = str(input("Fase concluída! Pressione qualquer tecla para continuar ou R para retornar ao menu: ")).upper()
     if opcao == "R":
+        cls()
         decideMenus()
     else:
+        cls()
         iniciandoJogo()
 
 
-def terminou_partidaInimigo():
+def terminouPartidaInimigo():
     """
-    funcao executada no fim de uma partida com o inimigo, tem a mesma semantica da funcao terminou_partida()
+    Funcao executada no fim de uma partida com o inimigo, tem a mesma semantica da funcao terminou_partida().
     :return: void, da continuidade com o funcionamento do jogo.
     """
-    GANHOUMOEDAS = 60
-    somaCoins(GANHOUMOEDAS)
-    somaCoinsTotais(GANHOUMOEDAS)
+    ganhoumoedas = 60
+    somaCoins(ganhoumoedas)
+    somaCoinsTotais(ganhoumoedas)
     opcao = str(input("Estágio encerrado. Digite qualquer botão para continuar ou R para retornar ao menu: ")).upper()
     if opcao == "R":
         menuComInimigo()
@@ -398,15 +442,15 @@ def terminou_partidaInimigo():
         cls()
         carregando()
         cls()
-        inimigoPlays(get_posicao(), getPosicaoInimigo())
+        inimigoPlays(getPosicao(), getPosicaoInimigo())
 
 
 def menuComInimigo():
     """
-    essa funcao eh executada depois que o jogador zera o jogo.
+    Essa funcao eh executada depois que o jogador zera o jogo.
     libera a opcao de modo inimigo e se tb se comunica com o seletor de opcoes
-    para dar direcionamento ao game
-    :return: void, direciona o jogo de acordo com a acao escolhida
+    para dar direcionamento ao game.
+    :return: void, direciona o jogo de acordo com a acao escolhida.
     """
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
           "  Bem vind@ ao MineWars " + getUsuario() + " " + getEmoji() + "\n\n"
@@ -416,90 +460,108 @@ def menuComInimigo():
                                                       "       ┃➲  🄼 odo Inimigo!!!\n"
                                                       "       ┃➲  🅃 rocar Perfil \n"
                                                       "       ┃➲  🅂 core\n"
+                                                      "       ┃➲  🄶 uardar Progresso\n"
                                                       "       ┃➲  🄵 im\n\n"
                                                       "       Você está pronto?\n"
                                                       "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    qual_vai_ser()
+    qualVaiSer()
 
 
-def inimigoPlays(posicaopersonagem, posicaoinimigo):
+def inimigoPlays(posicao_personagem, posicaoinimigo):
     """
-    essa funcao roda quando o usuario libera e acessa o modo de jogo com o inimigo
-    :param posicaopersonagem: indica a posicao inicial do personagem
-    :param posicaoinimigo: indica a posicao inicial do inimigo
+    Essa funcao roda quando o usuario libera e acessa o modo de jogo com o inimigo.
+    :param posicao_personagem: in     if verificaSeMorreu(movimento, cenario, getPosicao()):
+                MapaInimigo(cenario)
+                print("Que pena...\nVocê perdeu, pisou na bomba!")
+                time.sleep(.9)
+                break
+
+            controlaPersonagem(movimento, cenario, getPosicao())
+
+            if verificaSeInimigoMatou(cenario, getPosicao()):
+                MapaInimigo(cenario)dica a posicao inicial do personagem.
+    :param posicaoinimigo: indica a posicao inicial do inimigo.
     :return: void, executa o conjunto de funcoes que imprimem o mapa, controlam o personagem e inimigo simultaneamente.
     """
-    cenario = getCenarioInimigo(posicaopersonagem, posicaoinimigo)
+    cenario = getCenarioInimigo(posicao_personagem, posicaoinimigo)
     while True:
         cls()
         MapaInimigo(cenario)
         movimento = str(input()).upper()
-        movimento = validaMovimentacao(movimento, cenario, get_posicao())
+        movimento = validaMovimentacao(movimento, cenario, getPosicao())
         if movimento == PW3:
             movimento = str(input()).upper()
 
-            movimento = validaMovimentacao(movimento, cenario, get_posicao())
+            movimento = validaMovimentacao(movimento, cenario, getPosicao())
 
-            if verificaSeMorreu(movimento, cenario, get_posicao()):
+            if verificaSeMorreu(movimento, cenario, getPosicao()):
+                cls()
                 MapaInimigo(cenario)
                 print("Que pena...\nVocê perdeu, pisou na bomba!")
                 time.sleep(.9)
                 break
 
-            controlaPersonagem(movimento, cenario, get_posicao())
+            controlaPersonagem(movimento, cenario, getPosicao())
 
-            if verificaSeInimigoMatou(cenario, get_posicao()):
-                MapaInimigo(cenario)
-                print("O demônio te matou fela da puta")
-                time.sleep(.9)
-                break
-
-            if venceu(cenario):
-                MapaInimigo(cenario)
-                print("Congratulations!")
-                time.sleep(.9)
+            if estadoJogo(cenario):
+                cls()
                 break
 
         else:
 
-            if verificaSeMorreu(movimento, cenario, get_posicao()):
+            if verificaSeMorreu(movimento, cenario, getPosicao()):
+                cls()
                 MapaInimigo(cenario)
                 print("Que pena...\nVocê perdeu, pisou na bomba!")
                 time.sleep(.9)
                 break
 
-            controlaPersonagem(movimento, cenario, get_posicao())
+            controlaPersonagem(movimento, cenario, getPosicao())
 
-            if verificaSeInimigoMatou(cenario, get_posicao()):
+            if verificaSeInimigoMatou(cenario, getPosicao()):
                 MapaInimigo(cenario)
                 print("O demônio te matou fela da puta")
                 time.sleep(.9)
                 break
 
-            MovimentaInimigo(get_posicao(), getPosicaoInimigo(), cenario)
+            MovimentaInimigo(getPosicao(), getPosicaoInimigo(), cenario)
 
-            if verificaSeInimigoMatou(cenario, get_posicao()):
-                MapaInimigo(cenario)
-                print("O demônio te matou fela da puta")
-                time.sleep(.9)
-                break
-
-            if venceu(cenario):
-                MapaInimigo(cenario)
-                print("Congratulations!")
-                time.sleep(.9)
+            if estadoJogo(cenario):
+                cls()
                 break
 
     time.sleep(1)
     cls()
-    terminou_partidaInimigo()
+    terminouPartidaInimigo()
+
+
+def estadoJogo(cenario):
+    """
+    roda dentro da partida com o inimigo para verificar se o cidadão venceu a partida
+    ou se morreu para o inimigo
+    :param cenario: mapa da fase onde o jogador esta andando
+    :return: True se morreu ou venceu
+    """
+    if verificaSeInimigoMatou(cenario, getPosicao()):
+        cls()
+        MapaInimigo(cenario)
+        print("O demônio te matou fela da puta")
+        time.sleep(.9)
+        return True
+
+    if venceu(cenario):
+        cls()
+        MapaInimigo(cenario)
+        print("Congratulations!")
+        time.sleep(.9)
+        return True
 
 
 def primeiraTela():
     """
-    primeira tela do jogo, sempre executada quando o jogo eh iniciado.
+    Primeira tela do jogo, sempre executada quando o jogo eh iniciado.
     caso exista algum progresso salvo, simplesmente invoca o menu correspondente.
-    :return: void, colhe informacoes do usuario e da direcionamento ao jogo
+    :return: void, colhe informacoes do usuario e da direcionamento ao jogo.
     """
     config.read("save.ini")
     carregando()
@@ -509,7 +571,8 @@ def primeiraTela():
     for i in range(len(config.sections())):
         print(f"{i+1} - {config.sections()[i]}")
     print("◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    usuario_selecionado = str(input("Insira seu nome de usuário para continuar\nOu um novo nick para iniciar uma campanha: "))
+    usuario_selecionado = str(input("Insira seu nome de usuário para continuar\n"
+                                    "Ou um novo nick para iniciar uma campanha: "))
     if usuario_selecionado not in config.sections():
         print("Entendido!")
         time.sleep(.5)
@@ -524,6 +587,10 @@ def primeiraTela():
 
 
 def decideMenus():
+    """
+    Essa função escolhe se vai ser printada a opção com modo inimigo ou não. Para caso o inimigo zere.
+    :return: As funções referentes aos menus.
+    """
     if zerou():
         menuComInimigo()
     else:
@@ -531,13 +598,19 @@ def decideMenus():
 
 
 def entreTelas(user):
+    """
+    Essa função é executada entre a tela de login, ou seja, onde é carregada o perfil e o menu inicial.
+    Só é rodada quando um novo perfil for criado.
+    :param user: Nome do usuário
+    :return: void
+    """
     time.sleep(2)
     print("Muito bom, agora...\nDentre as opções a seguir, qual você escolheria para definir seu personagem? ")
     time.sleep(2)
-    opcoesEmoji = ["1", "2", "3", "4", "5"]
+    opcoes_emoji = ["1", "2", "3", "4", "5"]
     print("① - 『" + MACACO + "』\n② - 『" + GATO + "』\n③ - 『" + ET + "』\n④ - 『" + CAVALO + "』\n⑤ - 『" + UNICORNIO + "』")
     emote = str(input())
-    while emote not in opcoesEmoji:
+    while emote not in opcoes_emoji:
         print("Por favor, selecione uma opção válida...")
         time.sleep(2)
         print("Informe um dos números anteriormente citados para selecionar seu personagem.")
@@ -553,8 +626,8 @@ def entreTelas(user):
 
 def carregando():
     """
-    imprime um conjunto de palavras que controla o fluxo de tempo do jogo
-    :return: void, apenas imprime na tela alguns dados
+    Imprime um conjunto de palavras que controla o fluxo de tempo do jogo.
+    :return: void, apenas imprime na tela alguns dados.
     """
     print("███▒▒▒▒▒▒▒")
     time.sleep(1)
@@ -568,6 +641,36 @@ def carregando():
     print("██████████ - 100%")
     time.sleep(.5)
     cls()
+
+
+def MapaInimigo(cenario):
+    """
+    Exibe o mapa inimigo para ser usado na interface com o usuário.
+    :param cenario: A lista matriz referente ao mapa do modo inimigo.
+    :return: Print's do cenário
+    """
+    for linha in range(len(cenario)):
+        for coluna in range(len(cenario)):
+            if cenario[linha][coluna] == 0:
+                if coluna == (len(cenario) - 1):
+                    print(MATO.format(cenario))
+                else:
+                    print(MATO, end='')
+            elif cenario[linha][coluna] == 1:
+                if coluna == (len(cenario) - 1):
+                    print(BOMBA.format(cenario))
+                else:
+                    print(BOMBA, end='')
+            elif cenario[linha][coluna] == PERSONAGEM:
+                if coluna == (len(cenario) - 1):
+                    print(getEmoji().format(cenario))
+                else:
+                    print(getEmoji(), end='')
+            else:
+                if coluna == (len(cenario) - 1):
+                    print(CAPETA.format(cenario))
+                else:
+                    print(CAPETA, end='')
 
 
 if __name__ == "__main__":

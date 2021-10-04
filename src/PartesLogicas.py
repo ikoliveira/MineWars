@@ -7,11 +7,12 @@ import configparser
 import copy
 import time
 
-def posicao_inicial(linha):
+
+def posicaoInicial(linha):
     """
-        Função que exerce o papel de dar um índice possível inicial para ser utilizado
+        Função que exerce o papel de dar um índice possível inicial para ser utilizado.
         posteriormente para a posição inicial de 'x'.
-        :return: O valor entre 0 e 7
+        :return: O valor entre 0 e 7.
         """
     valor = random.randint(0, linha - 1)
     return valor
@@ -19,23 +20,24 @@ def posicao_inicial(linha):
 
 def criaCenario(pos_x, fase):
     """
-    funcao que cria um cenario (mapa) propriamente dito onde a partida acontecera
-    :param pos_x: indica a posicao em que o jogador inicia o jogo
-    :param fase: matriz que define o tamanho da fase.
-    :return: uma matriz de tamanho x indicado pela fase
+    Funcao que cria um cenario (mapa) propriamente dito onde a partida acontecera.
+    :param pos_x: indica a posicao em que o jogador inicia o jogo.
+    :param fase: matriz que define o tamanho da fase..
+    :return: uma matriz de tamanho x indicado pela fase.
     """
     matriz_zerada = []
-    cenarioIntroduzido = introduzCenario(matriz_zerada, pos_x, fase)  # cenario com caminho nao seguro
-    caminhoAnalisado = analisaCaminho(cenarioIntroduzido)  # posicao das bombas para liberar o caminho para o personagem
-    caminhoLivre = preparaCamiho(cenarioIntroduzido, caminhoAnalisado)
-    return caminhoLivre
+    cenario_introduzido = introduzCenario(matriz_zerada, pos_x, fase)  # cenario com caminho nao seguro
+    caminho_analisado = analisaCaminho(cenario_introduzido)  # posicao das bombas para liberar o caminho
+    # para o personagem
+    caminho_livre = preparaCaminho(cenario_introduzido, caminho_analisado)
+    return caminho_livre
 
 
-def zero_ou_um():
+def zeroOuUm():
     """
-    Função que exerce o papel de crial um valor randômico entre 0 e 1 para ser utilizado posteriormente
+    Função que exerce o papel de crial um valor randômico entre 0 e 1 para ser utilizado posteriormente.
     na linha das matrizes criadas.
-    :return: int
+    :return: int.
     """
     valor = random.randint(0, 1)
     return valor
@@ -43,24 +45,24 @@ def zero_ou_um():
 
 def introduzCenario(lista_matriz, pos_x, fase):
     """
-    cria a matriz indexando a posicao do jogador no mapa.
-    :param lista_matriz: a lista onde o mapa sera armazenado
-    :param pos_x: posicao inicial onde o jogador sera indexado
-    :param fase: mapa da fase
-    :return: arraylist
+    Cria a matriz indexando a posicao do jogador no mapa.
+    :param lista_matriz: a lista onde o mapa sera armazenado.
+    :param pos_x: posicao inicial onde o jogador sera indexado.
+    :param fase: mapa da fase.
+    :return: arraylist.
     """
     linha_de_um = []
     for linha in range(fase):
         linhas = []
         for coluna in range(fase):
-            linhas.append(zero_ou_um())
+            linhas.append(zeroOuUm())
             if linha == 0:
                 linha_de_um.append(1)
         while True:
             if linhas == linha_de_um:
                 linhas = []
                 for j in range(fase):
-                    linhas.append(zero_ou_um())
+                    linhas.append(zeroOuUm())
             else:
                 lista_matriz.append(linhas)
                 break
@@ -103,12 +105,12 @@ def analisaCaminho(lista_matriz):
     return lista_indices
 
 
-def preparaCamiho(lista_matriz, lista_indices):
+def preparaCaminho(lista_matriz, lista_indices):
     """
-    abre a matriz para garantir que exista ao menos um caminho livre
-    :param lista_matriz: mapa
+    Abre a matriz para garantir que exista ao menos um caminho livre.
+    :param lista_matriz: mapa.
     :param lista_indices:
-    :return:
+    :return: Void.
     """
     for linha in range(len(lista_matriz)):
         for coluna in range(len(lista_matriz)):
@@ -160,11 +162,11 @@ def posicaoInvalida(lista_matriz, pos_x):
     :param pos_x: onde o personagem se encontra no momento
     :return: true se o jogador esta tentando ultrapassar uma borda
     """
-    tentou_bordaBaixo = (pos_x[0] == len(lista_matriz) - 1)
-    tentou_bordaDir = (pos_x[1] == 0)
-    tentou_bordaE = (pos_x[1] == len(lista_matriz) - 1)
+    tentou_borda_baixo = (pos_x[0] == len(lista_matriz) - 1)
+    tentou_borda_dir = (pos_x[1] == 0)
+    tentou_borda_e = (pos_x[1] == len(lista_matriz) - 1)
 
-    if tentou_bordaDir or tentou_bordaE or tentou_bordaBaixo:
+    if tentou_borda_dir or tentou_borda_e or tentou_borda_baixo:
         return True
 
 
@@ -201,13 +203,13 @@ def venceu(lista_matriz):
             return True
 
 
-def passou_fase(tamanhomatriz):
+def passouDeFase(tamanhomatriz):
     """
     essa funcao roda sempre que o jogador vence uma partida e passa de fase
     :return: void
     """
-    faseFinal = 14
-    if tamanhomatriz < faseFinal:
+    fase_final = 14
+    if tamanhomatriz < fase_final:
         tamanhomatriz += 1
     return tamanhomatriz
 
@@ -227,47 +229,55 @@ def limpaFase():
 
 
 def limpaJogoInimigo():
-    posInimi = getPosicaoInimigo()
-    posPerso = get_posicao()
-    posInimi.clear()
-    posPerso.clear()
+    """
+    Serve para dar um clear na posição do inimigo e do personagem para evitar bug's.
+    :return: Listas dos personagens limpas.
+    """
+    pos_inimi = getPosicaoInimigo()
+    pos_perso = getPosicao()
+    pos_inimi.clear()
+    pos_perso.clear()
 
 
 def preparaPosicoes():
+    """
+    Pega as globais referente a posição do personagem e do inimigo e adiciona uma nova posição para as tais.
+    :return: Nova posição do inimigo e personagem.
+    """
     limpaJogoInimigo()
     global posicaopersonagem
     global posicaoInimigo
     global posInitModInim
-    posicaopersonagem = [posInitModInim - 1, posicao_inicial(tamanho_matriz)]
-    posicaoInimigo = [0, posicao_inicial(tamanho_matriz)]
+    posicaopersonagem = [posInitModInim - 1, posicaoInicial(tamanho_matriz)]
+    posicaoInimigo = [0, posicaoInicial(tamanho_matriz)]
 
 
 def refazMapa(pos_x, fase):
     """
-    cria um novo mapa ao fim de cada partida
-    :param pos_x: posicao atual do personagem
-    :param fase: mapa da partida
-    :return:
+    Cria um novo mapa ao fim de cada partida.
+    :param pos_x: posicao atual do personagem.
+    :param fase: mapa da partida.
+    :return: O novo cenario criado para ser utilizado.
     """
-    novoCenario = criaCenario(pos_x, fase)
-    return novoCenario
+    novo_cenario = criaCenario(pos_x, fase)
+    return novo_cenario
 
 
 def resetaPosicaoJogador():
     """
-    reseta uma nova posicao para o x
-    :return: arraylist representando a posical inicial do jogador
+    Reseta uma nova posicao para o x.
+    :return: arraylist representando a posical inicial do jogador.
     """
     global tamanho_matriz
-    novaPosicao = [tamanho_matriz - 1, posicao_inicial(tamanho_matriz)]
-    return novaPosicao
+    nova_posicao = [tamanho_matriz - 1, posicaoInicial(tamanho_matriz)]
+    return nova_posicao
 
 
 def passouFase(moedasganhas):
     """
-    roda sempre que o jogador passa de fase e incrementa a fase
-    :param moedasganhas: quantidade de moedas ganhas
-    :return: void, causa alteracoes nas variaveis globais
+    Roda sempre que o jogador passa de fase e incrementa a fase.
+    :param moedasganhas: quantidade de moedas ganhas.
+    :return: void, causa alteracoes nas variaveis globais.
     """
     global tamanho_matriz
     tamanho_matriz += 1
@@ -275,106 +285,215 @@ def passouFase(moedasganhas):
     somaCoinsTotais(moedasganhas)
 
 
-def get_cenario():
+def getCenario():
+    """
+    Recupera o cenário e retorna como global.
+    :return: A variável onde o cenario está armazenado.
+    """
     global cenarioDaFase
     return cenarioDaFase.copy()
 
 
-def get_posicao():
+def getPosicao():
+    """
+    Recupera a posição e retorna como global.
+    :return: A variável onde a posição está armazenada.
+    """
     global posicaopersonagem
     return posicaopersonagem
 
 
-def incrementa_vezesRodando():
+def incrementaVezesRodando():
+    """
+    Esta função serve para adicionar a quantidade de vezes que o usuário jogou alguma partida.
+    :return: A variável qtd_vezes com os pontos adicionados.
+    """
     global qtd_vezes
     qtd_vezes += 1
 
 
 def getTimming():
+    """
+    Recupera a qtd_vezes e retorna como global.
+    :return: A variável onde a qtd_vezes está armazenada.
+    """
     global qtd_vezes
     return qtd_vezes
 
-def setTimming(timm):
+
+def loadingTimming(timm):
+    """
+    Executada quando é feito o carregamento de um perfil e o transforma em inteiro para incrementação em jogo.
+    :param timm: Timming recebido na entrada.
+    :return: Transforma o Timming em inteiro.
+    """
     global qtd_vezes
     qtd_vezes = int(timm)
 
+
 def getCoins():
+    """
+    Recupera os coins e retorna como global.
+    :return: A variável onde os coins estão armazenados.
+    """
     global coins
     return coins
 
 
 def somaCoins(valor):
+    """
+    Soma a variável global coins com o valor recebido nos jogos.
+    :param valor: coins recebidos nos códigos.
+    :return: O coins adicionados.
+    """
     global coins
     coins += valor
 
+
 def setCoins(valo):
+    """
+    Executada quando é feito o carregamento de um perfil e o transforma em inteiro para incrementação em jogo.
+    :param valo: Valor recebido na entrada.
+    :return: Transforma o valor em inteiro.
+    """
     global coins
     coins = int(valo)
 
 
 def gastouCoins(valor):
+    """
+    Função que diminui a variável global coins se algum coin for gastado.
+    :param valor: O valor a ser gasto
+    :return: o valor diminuido
+    """
     global coins
     coins -= valor
 
 
 def getCoinsTotais():
+    """
+    Recupera os coins Totais e retorna como global.
+    :return: A variável onde os coins Totais estão armazenados.
+    """
     global coins_totais
     return coins_totais
 
 
 def somaCoinsTotais(valor):
+    """
+    Soma a variável global coins Totais com o valor recebido nos jogos.
+    :param valor: coins recebidos nos códigos.
+    :return: O coins adicionados.
+    """
     global coins_totais
     coins_totais += valor
 
+
 def setCoinsTotais(va):
+    """
+    Executada quando é feito o carregamento de um perfil e o transforma em inteiro para incrementação em jogo.
+    :param va: Valor recebido na entrada.
+    :return: Transforma o valor em inteiro.
+    """
     global coins_totais
     coins_totais = int(va)
 
 
 def setPowerUps(power):
+    """
+    Função utilizada para incrementar o powerup comprado na loja na variável global.
+    :param power: O poder comprado.
+    :return: o powerup na lista de powerup's comprados.
+    """
     global powerUps
     powerUps.append(power)
 
 
 def getPowerUps():
+    """
+    Recupera os PowerUps e retorna como global.
+    :return: A variável onde os PowerUps estão armazenados.
+    """
     global powerUps
     return powerUps
 
 
 def getPosicaoInimigo():
+    """
+    Recupera a posição do inimigo e retorna como global.
+    :return: A variável onde a posição do inimigo está armazenada.
+    """
     global posicaoInimigo
     return posicaoInimigo
 
 
 def getFase():
+    """
+    Recupera a posição do inimigo e retorna como global.
+    :return: A variável onde a posição do inimigo está armazenada.
+    """
     global tamanho_matriz
     return tamanho_matriz
 
+
 def setFase(val):
+    """
+    Executada quando é feito o carregamento de um perfil e o transforma em inteiro para incrementação em jogo.
+    :param val: Valor recebido na entrada.
+    :return: Transforma o valor em inteiro.
+    """
     global tamanho_matriz
     tamanho_matriz = int(val)
 
-def setUsuario(nomeUsuario,):
-    global usuario
-    usuario = nomeUsuario
 
+def setUsuario(nome_usuario):
+    """
+    Recebe o nome do usuário escolhido na parte de escolha dos perfis e o coloca como a variável global
+    respectiva aos perfis.
+    :param nome_usuario: Nome que o usuário colocou.
+    :return: O nome do usuário modificado.
+    """
+    global usuario
+    usuario = nome_usuario
 
 
 def setEmoji(emoti):
+    """
+    Recebe o emoji do usuário escolhido na parte de escolha dos perfis e o coloca como a variável global
+    respectiva aos emojis.
+    :param emoti: Emoji que o usuário colocou.
+    :return: O emoji do usuário modificado.
+    """
     global emoji
     emoji = emoti
 
+
 def getUsuario():
+    """
+    Recupera o usuário e retorna como global.
+    :return: A variável onde o usuário está armazenado.
+    """
     global usuario
     return usuario
 
 
 def zerou():
+    """
+    Está função serve para reconhecer a condição de parada da adição do tamanho da fase paro o começo do modo
+    infinity.
+    :return: True ou False.
+    """
     if getFase() >= 14:
         return True
 
 
 def organizaUsuario(nome, emoticon):
+    """
+    Recebe os dados da entrada quando o usuário vai criar um perfil e define o nome e o emoji como variaveis globais.
+    :param nome: Nome do usuário.
+    :param emoticon: Nome do emoji.
+    :return: O nome e o emoji novo.
+    """
     emote = ""
     if emoticon == "1":
         emote = MACACO
@@ -391,18 +510,34 @@ def organizaUsuario(nome, emoticon):
 
 
 def getEmoji():
+    """
+    Recupera o emoji e retorna como global.
+    :return: A variável onde o emoji está armazenado.
+    """
     global emoji
     return emoji
 
 
 def novaCampanha():
+    """
+    Está função serve para caso o usuário escolha novamente o iniciar jogo. Onde ele vai recomeçar o jogo com uma
+    matriz de tamanho 4.
+    :return: Uma matriz de tamanho 4.
+    """
+
     global tamanho_matriz
     tamanho_matriz = 4
     limpaFase()
 
 
 def salvarProgresso(save_name):
-    template_save = {"usuario": getUsuario(), "emoji": getEmoji(), "tamanho_matriz": getFase(), "qtd_vezes": getTimming(), "coins": getCoins(), "coins_totais": getCoinsTotais()}
+    """
+    Está função realiza o save do game, destribuindo as informações necessárias para o arquivo.
+    :param save_name: O nome do usuário que está jogando
+    :return: Reescrita do arquivo.
+    """
+    template_save = {"usuario": getUsuario(), "emoji": getEmoji(), "tamanho_matriz": getFase(),
+                     "qtd_vezes": getTimming(), "coins": getCoins(), "coins_totais": getCoinsTotais()}
     config.read("save.ini")
     config[save_name] = copy.deepcopy(template_save)
     with open("save.ini", "w") as save_file:
@@ -410,21 +545,26 @@ def salvarProgresso(save_name):
 
 
 def carregarProgresso(nome_usuario):
+    """
+    Carrega as informações salvas no arquivo no início do jogo ou na troca de perfis.
+    :param nome_usuario: Nome do usuário a ser carregado nos dados.
+    :return: As variáveis globais alteradas respectivamente.
+    """
     config.read("save.ini")
     time.sleep(3)
     if nome_usuario in config:
         setUsuario(config[nome_usuario].get("usuario"))
         setEmoji(config[nome_usuario].get("emoji"))
         setFase(config[nome_usuario].get("tamanho_matriz"))
-        setTimming(config[nome_usuario].get("qtd_vezes"))
+        loadingTimming(config[nome_usuario].get("qtd_vezes"))
         setCoins(config[nome_usuario].get("coins"))
         setCoinsTotais(config[nome_usuario].get("coins_totais"))
 
 
 tamanho_matriz = 4
 posInitModInim = 20
-posicaopersonagem = [tamanho_matriz - 1, posicao_inicial(tamanho_matriz)]
-posicaoInimigo = [0, posicao_inicial(tamanho_matriz)]
+posicaopersonagem = [tamanho_matriz - 1, posicaoInicial(tamanho_matriz)]
+posicaoInimigo = [0, posicaoInicial(tamanho_matriz)]
 cenarioDaFase = criaCenario(posicaopersonagem, tamanho_matriz)
 qtd_vezes = 0
 coins = 0
