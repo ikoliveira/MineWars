@@ -1,7 +1,7 @@
-from PartesLogicas import *
+from partes_logicas import *
 
 
-def criaCenarioInimigo(pos_x, pos_y, tamanho):
+def cria_cenario_inimigo(pos_x, pos_y, tamanho):
     """
     funcao que cria um cenario (mapa) propriamente dito onde a partida acontecera
     :param pos_x: indica a posicao em que o jogador inicia o jogo
@@ -10,23 +10,23 @@ def criaCenarioInimigo(pos_x, pos_y, tamanho):
     :return:
     """
     matriz_zerada = []
-    cenario_introduzido = criaMatrizInimigo(matriz_zerada, pos_x, pos_y, tamanho)  # cenario com caminho nao seguro
-    caminho_analisado = analisaCaminhoInimigo(cenario_introduzido)
-    caminho_livre = preparaCaminho(cenario_introduzido, caminho_analisado)
+    cenario_introduzido = cria_matriz_inimigo(matriz_zerada, pos_x, pos_y, tamanho)  # cenario com caminho nao seguro
+    caminho_analisado = analisa_caminho_inimigo(cenario_introduzido)
+    caminho_livre = prepara_caminho(cenario_introduzido, caminho_analisado)
     return caminho_livre
 
 
-def getCenarioInimigo(pos_x, pos_y):
+def get_cenario_inimigo(pos_x, pos_y):
     """
     Função criada para retornar a criação do cenario inimigo.
     :param pos_x: lista indicando linha e coluna do personagem.
     :param pos_y: lista indicando linha e coluna do inimigo.
     :return: a função cria cenario com as informações necessárias.
     """
-    return criaCenarioInimigo(pos_x[1], pos_y[1], 20)
+    return cria_cenario_inimigo(pos_x[1], pos_y[1], 20)
 
 
-def criaMatrizInimigo(lista_matriz, pos_x, pos_y, tamanho):
+def cria_matriz_inimigo(lista_matriz, pos_x, pos_y, tamanho):
     """
     Serve para criar o mapa inimigo sem o caminho possível e coloca o personagem e o inimigo no mapa
     :param lista_matriz: Recebe uma matriz vazia para zerar.
@@ -36,12 +36,12 @@ def criaMatrizInimigo(lista_matriz, pos_x, pos_y, tamanho):
     :return: retorna a lista matriz criada.
     """
     pos_x = [tamanho - 1, pos_x]
-    lista_matriz = introduzCenario(lista_matriz, pos_x, tamanho)
+    lista_matriz = introduz_cenario(lista_matriz, pos_x, tamanho)
     lista_matriz[0][pos_y] = INIMIGO
     return lista_matriz
 
 
-def analisaCaminhoInimigo(lista_matriz):
+def analisa_caminho_inimigo(lista_matriz):
     """
     Este for em sua totalidade serve para armazenar os indices 0 (de cada linha)em uma lista para
     posteriormente ser escolhido de maneira aleatória e assim fazer um caminho entre as bombas.
@@ -79,7 +79,7 @@ def analisaCaminhoInimigo(lista_matriz):
     return lista_indices
 
 
-def MovimentaInimigo(pos_x, pos_y, lista_matriz):
+def movimenta_inimigo(pos_x, pos_y, lista_matriz):
     """
     Essa função é responsável pela inteligência artificial do inimigo e além disso escolhe as posições possíveis para
     aproximação e em uma escolha aleatória movimenta o inimigo para uma posição mias proxima.
@@ -116,7 +116,7 @@ def MovimentaInimigo(pos_x, pos_y, lista_matriz):
         pos_y[1] = (pos_y[1] + 1)
 
 
-def verificaSeInimigoMatou(cenario, pos_x):
+def verifica_se_inimigo_matou(cenario, pos_x):
     """
     Essa função serve para indentificar se após a movimentaçõo do usuário e do inimigo se este(o personagem) não
     está em uma posição adjacente ao inimigo.
