@@ -1,4 +1,8 @@
-from partes_logicas import *
+# coding: utf-8
+# projeto para a disciplina de programacao 1 do IFPB
+# alunos: Diego Cardoso e Igor Kadson
+
+from src.partes_logicas import *
 
 
 def cria_cenario_inimigo(pos_x, pos_y, tamanho):

@@ -1,12 +1,13 @@
 # coding: utf-8
 # projeto para a disciplina de programacao 1 do IFPB
 # alunos: Diego Cardoso e Igor Kadson
-import random
-from constantes import *
+
 import configparser
 import copy
+import random
 import time
 
+from src.constantes import *
 
 def posicao_inicial(linha):
     """

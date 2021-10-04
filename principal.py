@@ -2,9 +2,9 @@
 # projeto para a disciplina de programacao 1 do IFPB
 # alunos: Diego Cardoso e Igor Kadson
 
-from modo_inimigo import *
 import os
 
+from src.modo_inimigo import *
 
 def cls():
     """
