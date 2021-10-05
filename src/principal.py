@@ -455,17 +455,17 @@ def menu_com_inimigo():
     :return: void, direciona o jogo de acordo com a acao escolhida.
     """
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
-          "  Bem vind@ ao MineWars " + get_usuario() + " " + get_emoji() + "\n\n"
-                                                      "       ┃➲  🄸 niciar jogo\n"
-                                                      "       ┃➲  🄲 ontinuar?\n"
-                                                      "       ┃➲  🄻 oja\n"
-                                                      "       ┃➲  🄼 odo Inimigo!!!\n"
-                                                      "       ┃➲  🅃 rocar Perfil \n"
-                                                      "       ┃➲  🅂 core\n"
-                                                      "       ┃➲  🄶 uardar Progresso\n"
-                                                      "       ┃➲  🄵 im\n\n"
-                                                      "       Você está pronto?\n"
-                                                      "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
+          "  Bem vind@ ao MineWars " + get_usuario() + " " + get_emoji() +
+          "\n\n       ┃➲  🄸 niciar jogo\n"
+          "       ┃➲  🄲 ontinuar?\n"
+          "       ┃➲  🄻 oja\n"
+          "       ┃➲  🄼 odo Inimigo!!!\n"
+          "       ┃➲  🅃 rocar Perfil \n"
+          "       ┃➲  🅂 core\n"
+          "       ┃➲  🄶 uardar Progresso\n"
+          "       ┃➲  🄵 im\n\n"
+          "       Você está pronto?\n"
+          "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
     intermedia_seletor()
 
 

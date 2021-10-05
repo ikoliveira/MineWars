@@ -137,22 +137,22 @@ def controla_personagem(movimentacao, lista_matriz, pos_x):
     :return: void
     """
     if movimentacao == 'W':
-        lista_matriz[pos_x[0] - 1][pos_x[1]] = 'x'
+        lista_matriz[pos_x[0] - 1][pos_x[1]] = PERSONAGEM
         lista_matriz[pos_x[0]][pos_x[1]] = 0
         pos_x[0] = (pos_x[0] - 1)
 
     elif movimentacao == 'S':
-        lista_matriz[pos_x[0] + 1][pos_x[1]] = 'x'
+        lista_matriz[pos_x[0] + 1][pos_x[1]] = PERSONAGEM
         lista_matriz[pos_x[0]][pos_x[1]] = 0
         pos_x[0] = (pos_x[0] + 1)
 
     elif movimentacao == 'A':
-        lista_matriz[pos_x[0]][pos_x[1] - 1] = 'x'
+        lista_matriz[pos_x[0]][pos_x[1] - 1] = PERSONAGEM
         lista_matriz[pos_x[0]][pos_x[1]] = 0
         pos_x[1] = (pos_x[1] - 1)
 
     elif movimentacao == 'D':
-        lista_matriz[pos_x[0]][pos_x[1] + 1] = 'x'
+        lista_matriz[pos_x[0]][pos_x[1] + 1] = PERSONAGEM
         lista_matriz[pos_x[0]][pos_x[1]] = 0
         pos_x[1] = (pos_x[1] + 1)
 
@@ -205,15 +205,15 @@ def venceu(lista_matriz):
             return True
 
 
-def passou_de_fase(tamanho_matriz):
+def passou_de_fase(tamanho_m):
     """
     essa funcao roda sempre que o jogador vence uma partida e passa de fase
     :return: void
     """
     fase_final = 14
-    if tamanho_matriz < fase_final:
-        tamanho_matriz += 1
-    return tamanho_matriz
+    if tamanho_m < fase_final:
+        tamanho_m += 1
+    return tamanho_m
 
 
 def limpa_fase():
@@ -538,8 +538,8 @@ def salvar_progresso(save_name):
     :param save_name: O nome do usuário que está jogando
     :return: Reescrita do arquivo.
     """
-    template_save = {"usuario": get_usuario(), "emoji": get_emoji(), "tamanho_matriz": get_fase(),
-                     "qtd_vezes": get_timming(), "coins": get_coins(), "coins_totais": get_coins_totais()}
+    template_save = {USUARIO: get_usuario(), EMOJI: get_emoji(), TAMANHO_M: get_fase(),
+                     QTD_VEZES: get_timming(), COINS: get_coins(), COINS_TOTAIS: get_coins_totais()}
     config.read(PROGRESSOS_ARQ)
     config[save_name] = copy.deepcopy(template_save)
     with open(PROGRESSOS_ARQ, "w") as save_file:
@@ -555,12 +555,12 @@ def carregar_progresso(nome_usuario):
     config.read(PROGRESSOS_ARQ)
     time.sleep(3)
     if nome_usuario in config:
-        set_usuario(config[nome_usuario].get("usuario"))
-        set_emoji(config[nome_usuario].get("emoji"))
-        set_fase(config[nome_usuario].get("tamanho_matriz"))
-        loading_timming(config[nome_usuario].get("qtd_vezes"))
-        set_coins(config[nome_usuario].get("coins"))
-        set_coins_totais(config[nome_usuario].get("coins_totais"))
+        set_usuario(config[nome_usuario].get(USUARIO))
+        set_emoji(config[nome_usuario].get(EMOJI))
+        set_fase(config[nome_usuario].get(TAMANHO_M))
+        loading_timming(config[nome_usuario].get(QTD_VEZES))
+        set_coins(config[nome_usuario].get(COINS))
+        set_coins_totais(config[nome_usuario].get(COINS_TOTAIS))
 
 
 tamanho_matriz = 4

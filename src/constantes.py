@@ -13,3 +13,10 @@ PW2 = "REVIVER"
 PW3 = "ST"
 PROGRESSOS_ARQ = "../save.ini"
 OPCOES_EMOJI = ["1", "2", "3", "4", "5"]
+
+USUARIO = "usuario"
+EMOJI = "emoji"
+TAMANHO_M = "tamanho_matriz"
+QTD_VEZES = "qtd_vezes"
+COINS = "coins"
+COINS_TOTAIS = "coins_totais"
