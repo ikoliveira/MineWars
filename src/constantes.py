@@ -11,3 +11,5 @@ INIMIGO = "v"
 PW1 = "SB"
 PW2 = "REVIVER"
 PW3 = "ST"
+PROGRESSOS_ARQ = "../save.ini"
+OPCOES_EMOJI = ["1", "2", "3", "4", "5"]

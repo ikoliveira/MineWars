@@ -4,7 +4,8 @@
 
 import os
 
-from src.modo_inimigo import *
+from modo_inimigo import *
+
 
 def cls():
     """
@@ -144,8 +145,8 @@ def valida_movimentacao(movimento, cenario, pos_x):
     :return: o input do movimento adequadamente atualizado.
     """
     possibilities = ["W", "S", "A", "D"]
-    power_ups = get_power_ups()
-    possibilities.extend(power_ups)
+    power_upx = get_power_ups()
+    possibilities.extend(power_upx)
     while True:
         if movimento not in possibilities:
             print("Movementacao inválida, por favor tente novamente")
@@ -252,7 +253,7 @@ def seletor_opcoes(option):
                 break
             if option == "S":
                 salvar_progresso(get_usuario())
-                config.read("save.ini")
+                config.read(PROGRESSOS_ARQ)
                 print("Score do Acumulado de Coins:")
                 time.sleep(.4)
                 for i in range(len(config.sections())):
@@ -275,7 +276,7 @@ def seletor_opcoes(option):
             if option == "T":
                 salvar_progresso(get_usuario())
                 print("Progresso salvo com sucesso!")
-                time.sleep(.9)
+                time.sleep(.4)
                 break
             if option == "G":
                 salvar_progresso(get_usuario())
@@ -302,12 +303,12 @@ def menu_inicial():
           "       ┃➲  🄵 im\n\n"
           "       Você está pront@\n" + "        " + get_usuario() + " " + get_emoji() +
           " ?\n ◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    qual_vai_ser()
+    intermedia_seletor()
 
 
-def qual_vai_ser():
+def intermedia_seletor():
     """
-    Direciona a opcao selecionada no menu para o seletor de opcoes.
+    Faz o intermédio entre o menu e o seletor de opcoes, direcionando a opcao selecionada no menu para o mesmo.
     :return: void, apenas chama outra funcao.
     """
     time.sleep(0.5)
@@ -353,18 +354,19 @@ def manipula_loja(opcao):
         decide_menus()
 
     if opcao == "1":
-
         time.sleep(.9)
         preco = 1000
         if get_coins() >= preco:
             print("Dica: Para usar, tecle SB")
         item = PW1
         valida_compra(preco, item)
+        loja()
 
     if opcao == "2":
         preco = 1500
         item = PW2
         valida_compra(preco, item)
+        loja()
 
     if opcao == "3":
         time.sleep(.9)
@@ -372,7 +374,7 @@ def manipula_loja(opcao):
         if get_coins() >= preco:
             print("Dica: Para usar, tecle ST")
         valida_compra(preco, PW3)
-    loja()
+        loja()
 
 
 def valida_compra(preco, item):
@@ -464,13 +466,13 @@ def menu_com_inimigo():
                                                       "       ┃➲  🄵 im\n\n"
                                                       "       Você está pronto?\n"
                                                       "◢▅▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▅◣")
-    qual_vai_ser()
+    intermedia_seletor()
 
 
-def inimigo_plays(posicao_personagem, posicaoinimigo):
+def inimigo_plays(posicao_pers, posicaoinimigo):
     """
     Essa funcao roda quando o usuario libera e acessa o modo de jogo com o inimigo.
-    :param posicao_personagem: in     if verificaSeMorreu(movimento, cenario, getPosicao()):
+    :param posicao_pers: in     if verificaSeMorreu(movimento, cenario, getPosicao()):
                 MapaInimigo(cenario)
                 print("Que pena...\nVocê perdeu, pisou na bomba!")
                 time.sleep(.9)
@@ -483,7 +485,7 @@ def inimigo_plays(posicao_personagem, posicaoinimigo):
     :param posicaoinimigo: indica a posicao inicial do inimigo.
     :return: void, executa o conjunto de funcoes que imprimem o mapa, controlam o personagem e inimigo simultaneamente.
     """
-    cenario = get_cenario_inimigo(posicao_personagem, posicaoinimigo)
+    cenario = get_cenario_inimigo(posicao_pers, posicaoinimigo)
     while True:
         cls()
         mapa_inimigo(cenario)
@@ -563,7 +565,7 @@ def primeira_tela():
     caso exista algum progresso salvo, simplesmente invoca o menu correspondente.
     :return: void, colhe informacoes do usuario e da direcionamento ao jogo.
     """
-    config.read("save.ini")
+    config.read(PROGRESSOS_ARQ)
     carregando()
     print("◥▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀◤\n"
           "    Bem vindo ao MineWars 『%s 』\n"
@@ -607,10 +609,9 @@ def entre_telas(user):
     time.sleep(2)
     print("Muito bom, agora...\nDentre as opções a seguir, qual você escolheria para definir seu personagem? ")
     time.sleep(2)
-    opcoes_emoji = ["1", "2", "3", "4", "5"]
     print("① - 『" + MACACO + "』\n② - 『" + GATO + "』\n③ - 『" + ET + "』\n④ - 『" + CAVALO + "』\n⑤ - 『" + UNICORNIO + "』")
     emote = str(input())
-    while emote not in opcoes_emoji:
+    while emote not in OPCOES_EMOJI:
         print("Por favor, selecione uma opção válida...")
         time.sleep(2)
         print("Informe um dos números anteriormente citados para selecionar seu personagem.")

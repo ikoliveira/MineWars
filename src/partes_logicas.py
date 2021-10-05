@@ -7,7 +7,8 @@ import copy
 import random
 import time
 
-from src.constantes import *
+from constantes import *
+
 
 def posicao_inicial(linha):
     """
@@ -277,7 +278,7 @@ def reseta_posicao_jogador():
 def passou_fase(moedas_ganhas):
     """
     Roda sempre que o jogador passa de fase e incrementa a fase.
-    :param moedasganhas: quantidade de moedas ganhas.
+    :param moedas_ganhas: quantidade de moedas ganhas.
     :return: void, causa alteracoes nas variaveis globais.
     """
     global tamanho_matriz
@@ -539,9 +540,9 @@ def salvar_progresso(save_name):
     """
     template_save = {"usuario": get_usuario(), "emoji": get_emoji(), "tamanho_matriz": get_fase(),
                      "qtd_vezes": get_timming(), "coins": get_coins(), "coins_totais": get_coins_totais()}
-    config.read("save.ini")
+    config.read(PROGRESSOS_ARQ)
     config[save_name] = copy.deepcopy(template_save)
-    with open("save.ini", "w") as save_file:
+    with open(PROGRESSOS_ARQ, "w") as save_file:
         config.write(save_file)
 
 
@@ -551,7 +552,7 @@ def carregar_progresso(nome_usuario):
     :param nome_usuario: Nome do usuário a ser carregado nos dados.
     :return: As variáveis globais alteradas respectivamente.
     """
-    config.read("save.ini")
+    config.read(PROGRESSOS_ARQ)
     time.sleep(3)
     if nome_usuario in config:
         set_usuario(config[nome_usuario].get("usuario"))
